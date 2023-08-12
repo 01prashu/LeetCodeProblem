@@ -1,17 +1,18 @@
 #include "Tree.h"
-vector<vector<int>> levelOrder(Node *root)
+vector<vector<int>> levelOrderBottom(Node *root)
 {
     vector<vector<int>> ans;
     if (root == NULL)
     {
         return ans;
     }
+    stack<vector<int>> st;
     queue<Node *> q;
     q.push(root);
     while (!q.empty())
     {
-        int size = q.size();
         vector<int> temp;
+        int size = q.size();
         for (int i = 0; i < size; i++)
         {
             Node *t = q.front();
@@ -26,7 +27,13 @@ vector<vector<int>> levelOrder(Node *root)
                 q.push(t->right);
             }
         }
-        ans.push_back(temp);
+        st.push(temp);
+    }
+    while (!st.empty())
+    {
+        vector<int> t = st.top();
+        ans.push_back(t);
+        st.pop();
     }
     return ans;
 }
@@ -36,7 +43,7 @@ int main()
     root = BuildTree(root);
     LevelOrderTraversal(root);
     cout<<" Result"<<endl;
-    vector<vector<int>>result=levelOrder(root);
+    vector<vector<int>>result=levelOrderBottom(root);
     cout<<"[";
     for(auto i: result)
     {
@@ -50,3 +57,12 @@ int main()
     cout<<"]"<<endl;
     return 0;
 }
+/*              3
+               /  \
+              9    20
+                   /  \
+                  15   7
+
+                  I/O : 3 9 -1 -1 20 15 -1 -1 7 -1 -1 
+                 Expected o/P:  [[15 7] [9 20] [3]]
+*/
